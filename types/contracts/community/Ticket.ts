@@ -29,34 +29,37 @@ import type {
 
 export declare namespace Ticket {
   export type TicketInfoStruct = {
-    id: PromiseOrValue<BigNumberish>;
-    uri: PromiseOrValue<string>;
     creator: PromiseOrValue<string>;
-    poolWallet: PromiseOrValue<string>;
-    price: PromiseOrValue<BigNumberish>;
-    maxSupply: PromiseOrValue<BigNumberish>;
     open_blockTimestamp: PromiseOrValue<BigNumberish>;
     close_blockTimestamp: PromiseOrValue<BigNumberish>;
+    maxSupply: PromiseOrValue<BigNumberish>;
+    id: PromiseOrValue<BigNumberish>;
+    price: PromiseOrValue<BigNumberish>;
+    uri: PromiseOrValue<string>;
+    sharesAmounts: PromiseOrValue<BigNumberish>[];
+    shareholdersAddresses: PromiseOrValue<string>[];
   };
 
   export type TicketInfoStructOutput = [
-    BigNumber,
-    string,
-    string,
     string,
     BigNumber,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
+    BigNumber,
+    string,
+    BigNumber[],
+    string[]
   ] & {
-    id: BigNumber;
-    uri: string;
     creator: string;
-    poolWallet: string;
-    price: BigNumber;
-    maxSupply: BigNumber;
     open_blockTimestamp: BigNumber;
     close_blockTimestamp: BigNumber;
+    maxSupply: BigNumber;
+    id: BigNumber;
+    price: BigNumber;
+    uri: string;
+    sharesAmounts: BigNumber[];
+    shareholdersAddresses: string[];
   };
 }
 
@@ -73,7 +76,7 @@ export interface TicketInterface extends utils.Interface {
     "mint(uint256)": FunctionFragment;
     "mintable()": FunctionFragment;
     "name()": FunctionFragment;
-    "registerTicket(uint256,string,uint256,uint256,uint256,address)": FunctionFragment;
+    "registerTicket(uint64,string,uint256,uint64,uint64,address[],uint256[])": FunctionFragment;
     "retrieveAllTickets()": FunctionFragment;
     "retrieveMintedTickets(address)": FunctionFragment;
     "retrieveRegisteredTicket(uint256)": FunctionFragment;
@@ -161,7 +164,8 @@ export interface TicketInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[]
     ]
   ): string;
   encodeFunctionData(
@@ -297,7 +301,7 @@ export interface TicketInterface extends utils.Interface {
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
     "Mint(address,uint256)": EventFragment;
-    "RegisterTicket(address,uint256,string,uint256,uint256,uint256)": EventFragment;
+    "RegisterTicket(address,uint64,uint64,uint64,uint256,uint256,string,uint256[],address[])": EventFragment;
     "TransferBatch(address,address,address,uint256[],uint256[])": EventFragment;
     "TransferSingle(address,address,address,uint256,uint256)": EventFragment;
     "URI(string,uint256)": EventFragment;
@@ -333,14 +337,27 @@ export type MintEventFilter = TypedEventFilter<MintEvent>;
 
 export interface RegisterTicketEventObject {
   creator: string;
-  tokenId: BigNumber;
-  metaDataURL: string;
-  maxSupply: BigNumber;
   open_blockTimestamp: BigNumber;
   close_blockTimestamp: BigNumber;
+  maxSupply: BigNumber;
+  tokenId: BigNumber;
+  price: BigNumber;
+  metaDataURL: string;
+  sharesAmounts: BigNumber[];
+  shareholdersAddresses: string[];
 }
 export type RegisterTicketEvent = TypedEvent<
-  [string, BigNumber, string, BigNumber, BigNumber, BigNumber],
+  [
+    string,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    BigNumber,
+    string,
+    BigNumber[],
+    string[]
+  ],
   RegisterTicketEventObject
 >;
 
@@ -464,7 +481,8 @@ export interface Ticket extends BaseContract {
       _price: PromiseOrValue<BigNumberish>,
       _open_blockTimestamp: PromiseOrValue<BigNumberish>,
       _close_blockTimestamp: PromiseOrValue<BigNumberish>,
-      poolWallet: PromiseOrValue<string>,
+      _shareholdersAddresses: PromiseOrValue<string>[],
+      _sharesAmounts: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -593,7 +611,8 @@ export interface Ticket extends BaseContract {
     _price: PromiseOrValue<BigNumberish>,
     _open_blockTimestamp: PromiseOrValue<BigNumberish>,
     _close_blockTimestamp: PromiseOrValue<BigNumberish>,
-    poolWallet: PromiseOrValue<string>,
+    _shareholdersAddresses: PromiseOrValue<string>[],
+    _sharesAmounts: PromiseOrValue<BigNumberish>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -722,7 +741,8 @@ export interface Ticket extends BaseContract {
       _price: PromiseOrValue<BigNumberish>,
       _open_blockTimestamp: PromiseOrValue<BigNumberish>,
       _close_blockTimestamp: PromiseOrValue<BigNumberish>,
-      poolWallet: PromiseOrValue<string>,
+      _shareholdersAddresses: PromiseOrValue<string>[],
+      _sharesAmounts: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -815,21 +835,27 @@ export interface Ticket extends BaseContract {
       tokenId?: PromiseOrValue<BigNumberish> | null
     ): MintEventFilter;
 
-    "RegisterTicket(address,uint256,string,uint256,uint256,uint256)"(
+    "RegisterTicket(address,uint64,uint64,uint64,uint256,uint256,string,uint256[],address[])"(
       creator?: PromiseOrValue<string> | null,
-      tokenId?: null,
-      metaDataURL?: null,
-      maxSupply?: null,
       open_blockTimestamp?: null,
-      close_blockTimestamp?: null
+      close_blockTimestamp?: null,
+      maxSupply?: null,
+      tokenId?: null,
+      price?: null,
+      metaDataURL?: null,
+      sharesAmounts?: null,
+      shareholdersAddresses?: null
     ): RegisterTicketEventFilter;
     RegisterTicket(
       creator?: PromiseOrValue<string> | null,
-      tokenId?: null,
-      metaDataURL?: null,
-      maxSupply?: null,
       open_blockTimestamp?: null,
-      close_blockTimestamp?: null
+      close_blockTimestamp?: null,
+      maxSupply?: null,
+      tokenId?: null,
+      price?: null,
+      metaDataURL?: null,
+      sharesAmounts?: null,
+      shareholdersAddresses?: null
     ): RegisterTicketEventFilter;
 
     "TransferBatch(address,address,address,uint256[],uint256[])"(
@@ -925,7 +951,8 @@ export interface Ticket extends BaseContract {
       _price: PromiseOrValue<BigNumberish>,
       _open_blockTimestamp: PromiseOrValue<BigNumberish>,
       _close_blockTimestamp: PromiseOrValue<BigNumberish>,
-      poolWallet: PromiseOrValue<string>,
+      _shareholdersAddresses: PromiseOrValue<string>[],
+      _sharesAmounts: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1053,7 +1080,8 @@ export interface Ticket extends BaseContract {
       _price: PromiseOrValue<BigNumberish>,
       _open_blockTimestamp: PromiseOrValue<BigNumberish>,
       _close_blockTimestamp: PromiseOrValue<BigNumberish>,
-      poolWallet: PromiseOrValue<string>,
+      _shareholdersAddresses: PromiseOrValue<string>[],
+      _sharesAmounts: PromiseOrValue<BigNumberish>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

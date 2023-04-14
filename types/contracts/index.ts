@@ -3,3 +3,5 @@
 /* eslint-disable */
 import type * as community from "./community";
 export type { community };
+import type * as public from "./public";
+export type { public };
