@@ -42,7 +42,9 @@ const mappingTicketInfo = async ({
 
 const fetchTokenURIJSON = async (uri: string) => {
   try {
-    const res = await fetch(`/api/ipfs?uri=${uri}`)
+    const res = await fetch(
+      process.env.NODE_ENV === 'development' ? `/api/ipfs?uri=${uri}` : uri
+    )
     const data = await res.json()
     return data
   } catch (error) {}
