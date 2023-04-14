@@ -17,10 +17,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ownable__factory>;
     getContractFactory(
-      name: "ERC2771Context",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC2771Context__factory>;
-    getContractFactory(
       name: "ERC1155",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC1155__factory>;
@@ -84,33 +80,12 @@ declare module "hardhat/types/runtime" {
       name: "Ticket",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Ticket__factory>;
-    getContractFactory(
-      name: "Administration",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Administration__factory>;
-    getContractFactory(
-      name: "Forwarder",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Forwarder__factory>;
-    getContractFactory(
-      name: "MintManager",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.MintManager__factory>;
-    getContractFactory(
-      name: "PublicTicket",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PublicTicket__factory>;
 
     getContractAt(
       name: "Ownable",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Ownable>;
-    getContractAt(
-      name: "ERC2771Context",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC2771Context>;
     getContractAt(
       name: "ERC1155",
       address: string,
@@ -191,26 +166,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Ticket>;
-    getContractAt(
-      name: "Administration",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Administration>;
-    getContractAt(
-      name: "Forwarder",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.Forwarder>;
-    getContractAt(
-      name: "MintManager",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.MintManager>;
-    getContractAt(
-      name: "PublicTicket",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.PublicTicket>;
 
     // default types
     getContractFactory(
