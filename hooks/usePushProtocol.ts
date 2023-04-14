@@ -4,7 +4,7 @@ import { useAccount, useSigner } from 'wagmi'
 import { ENV } from '@pushprotocol/restapi/src/lib/constants'
 import { generateChatGroupName } from '@/utils/push-chat'
 
-const env = process.env.NODE_ENV === 'production' ? ENV.PROD : ENV.STAGING
+const env = ENV.STAGING
 
 export const useInitPush = () => {
   const [user, setUser] = useState<push.IUser | null>(null)
