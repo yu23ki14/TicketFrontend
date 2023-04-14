@@ -110,7 +110,7 @@ const CreateTicketForm: FC = () => {
     Number(watch('maxSupply')),
     metadataURI,
     Number(watch('price')),
-    watch('blockTimeStamp')
+    [watch('blockTimeStamp')[0], watch('blockTimeStamp')[1]]
   )
 
   const uploadFile = useUploadImageFile()
@@ -184,6 +184,9 @@ const CreateTicketForm: FC = () => {
       const close_clockTimeStamp = Math.floor(
         (blockTimeStamp[1]?.getTime() || Date.now()) / 1000
       )
+      const shareholdersAmount = sharesAmounts.map((amount) =>
+        ethers.utils.parseEther(String(amount))
+      )
 
       await writeAsync({
         recklesslySetUnpreparedArgs: [
@@ -193,7 +196,7 @@ const CreateTicketForm: FC = () => {
           open_blockTimeStamp,
           close_clockTimeStamp,
           shareholdersAddresses,
-          sharesAmounts
+          shareholdersAmount
         ]
       })
       return

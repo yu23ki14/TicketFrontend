@@ -23,7 +23,7 @@ const contractAddresses: ContractAddresses = {
   ticket: {
     [chainId.hardhat]:
       (process.env.NEXT_PUBLIC_CONTRACT_TICKET_ADDRESS as `0x${string}`) ?? '',
-    [chainId.polygonMumbai]: '0x14651CC863BA601cA3f067c11d7368A9ddAb3E7d',
+    [chainId.polygonMumbai]: '0xED10f95100f347cAf011006E21044949882c1D87',
     [chainId.goerli]: '0x6beD9e854eC468373B70a00d864E660b9F224D32',
     [chainId.polygon]: '0x05338c40B9A379742fC9b7bA681Ae8CE8Db28AC2'
   }
