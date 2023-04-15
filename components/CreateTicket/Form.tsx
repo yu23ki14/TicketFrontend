@@ -1,6 +1,9 @@
-import { useRegisterTicket } from '@/hooks/useTicketContract'
+import {
+  useRegisterTicket,
+  useRetrieveAllTicket
+} from '@/hooks/useTicketContract'
 import useTranslation from 'next-translate/useTranslation'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import {
   Box,
@@ -20,20 +23,19 @@ import { useRouter } from 'next/router'
 import { useLitEncryption } from '@/hooks/useLitProtocol'
 import { BigNumber, ethers } from 'ethers'
 import { AddIcon, MinusIcon } from '@chakra-ui/icons'
-import SecretMessage from '@/components/CreateTicket/SecretMessage'
+import CreateSecretMessage from '@/components/CreateTicket/SecretMessage'
 import {
   useRevenueSharing,
   RevenueSharingData
 } from '@/hooks/useRevenueSharing'
+import { HIDE_TICKET_LIST } from '@/constants/Ticket'
 
 type FormData = {
   name: string
   description: string
   image: File | null
   secretMessage: File | null
-  linkedDecryptTokenIds: {
-    tokenId: number | null
-  }[]
+  decryptTokenIds: number[]
   revenueSharingData: RevenueSharingData[]
   creatorName: string
   maxSupply: number
@@ -49,7 +51,7 @@ interface TicketTokenMetadata {
   external_url?: string | null | undefined
   encryptedFile?: string
   encryptedSymmetricKey?: string
-  linkedDecryptTokenIds?: number[]
+  decryptTokenIds?: number[]
   attributes: TokenAttribute[]
 }
 
@@ -72,6 +74,14 @@ const CreateTicketForm: FC = () => {
   const { initEncrypt, updateEncrypt, encryptedSymmetricKey } =
     useLitEncryption()
 
+  const { data } = useRetrieveAllTicket()
+  const filteredTokenId = useMemo(() => {
+    return data
+      ?.filter((n) => !HIDE_TICKET_LIST.includes(n.id.toNumber()))
+      .map((n) => n.id.toNumber())
+  }, [data])
+  console.log(filteredTokenId)
+
   const {
     control,
     handleSubmit,
@@ -85,7 +95,7 @@ const CreateTicketForm: FC = () => {
       image: null,
       secretMessage: null,
       revenueSharingData: [{ shareholdersAddress: '', sharesAmount: null }],
-      linkedDecryptTokenIds: [],
+      decryptTokenIds: [],
       creatorName: '',
       maxSupply: 10,
       price: 10,
@@ -131,7 +141,11 @@ const CreateTicketForm: FC = () => {
     const callback = async () => {
       if (isSuccess && registeredTokenId) {
         if (encryptedSymmetricKey) {
-          await updateEncrypt(registeredTokenId, encryptedSymmetricKey)
+          await updateEncrypt(
+            registeredTokenId,
+            encryptedSymmetricKey,
+            watch('decryptTokenIds')
+          )
         }
         router.push(`/ticket/${registeredTokenId}`)
       }
@@ -142,6 +156,23 @@ const CreateTicketForm: FC = () => {
   const submit = async (data: FormData) => {
     try {
       if (!data.image || !isCorrectPercentage) return
+      const tempDecryptTokenIds = data.decryptTokenIds
+        .filter((n) => n !== null)
+        .map((n) => Number(n))
+      const isExistsTokenId = tempDecryptTokenIds.every((n) =>
+        filteredTokenId?.includes(n)
+      )
+      if (!isExistsTokenId) {
+        toast({
+          id: 'NOT_EXISTS_TOKENID',
+          title: t('CLAIM.TOAST.NOT_EXISTS_SECRET_MESSAGE_TOKENID'),
+          status: 'error',
+          duration: 5000,
+          position: 'top'
+        })
+        return
+      }
+
       const imageIPFSHash = await uploadFile(data.image)
       const metadataJson: TicketTokenMetadata = {
         name: data.name,
@@ -161,6 +192,14 @@ const CreateTicketForm: FC = () => {
       }
 
       if (data.secretMessage) {
+        if (tempDecryptTokenIds[0]) {
+          metadataJson.decryptTokenIds = tempDecryptTokenIds
+        }
+        console.log(metadataJson)
+
+        console.log('OK')
+
+        return
         const encryptedInfo = await initEncrypt(data.secretMessage)
         metadataJson.encryptedFile = encryptedInfo?.stringifiedEncryptedFile
         metadataJson.encryptedSymmetricKey =
@@ -286,7 +325,11 @@ const CreateTicketForm: FC = () => {
           />
         </FormControl>
 
-        <SecretMessage control={control} validateFileSize={validateFileSize} />
+        <CreateSecretMessage
+          control={control}
+          watch={watch}
+          validateFileSize={validateFileSize}
+        />
 
         <FormControl mt={5} isRequired>
           <FormLabel mt="1em" htmlFor="ticketName">

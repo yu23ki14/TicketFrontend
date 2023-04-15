@@ -5,18 +5,20 @@ import { FC, useCallback } from 'react'
 type Props = {
   tokenId: number
   encryptedSymmetricKey: string
+  decryptTokenIds?: number[]
 }
 
 const UpdateSecretMessageCrypt: FC<Props> = ({
   tokenId,
-  encryptedSymmetricKey
+  encryptedSymmetricKey,
+  decryptTokenIds
 }) => {
   const { updateEncrypt } = useLitEncryption()
   const toast = useToast()
 
   const update = useCallback(async () => {
     try {
-      await updateEncrypt(tokenId, encryptedSymmetricKey)
+      await updateEncrypt(tokenId, encryptedSymmetricKey, decryptTokenIds)
       toast({
         id: 'UPDATE_CRYPT_SUCCESS',
         title: 'Success!',
@@ -33,7 +35,7 @@ const UpdateSecretMessageCrypt: FC<Props> = ({
         position: 'top'
       })
     }
-  }, [tokenId, encryptedSymmetricKey, updateEncrypt])
+  }, [tokenId, encryptedSymmetricKey, decryptTokenIds, updateEncrypt])
 
   return (
     <Button width="100%" onClick={update}>

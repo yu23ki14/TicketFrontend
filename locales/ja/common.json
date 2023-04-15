@@ -47,6 +47,7 @@
 
   "REGISTERD_TICKET_LIST": "チケット一覧",
   "EMPTY_TICKET_LIST": "該当するチケットが見つかりませんでした",
+  "EXISTS_SAME_TOKENID": "シークレットメッセージ用に設定したチケットIDが重複しています",
 
   "CLAIM": {
     "TOAST": {
@@ -55,7 +56,8 @@
       "SUCCESS": "チケットを受け取りました。",
       "RETRIEVE_TICKETS_FAILED": "チケット一覧の取得に失敗しました。",
       "TX_FAILED": "トランザクションが失敗しました。",
-      "DEFAULT_ERROR": "不明なサーバーエラー"
+      "DEFAULT_ERROR": "不明なサーバーエラー",
+      "NOT_EXISTS_SECRET_MESSAGE_TOKENID": "シークレットメッセージ用に設定したチケットIDの中で存在しないものがあります"
     }
   },
 

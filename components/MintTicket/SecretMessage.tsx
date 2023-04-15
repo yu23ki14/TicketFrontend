@@ -9,23 +9,24 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
-  Text,
   useDisclosure
 } from '@chakra-ui/react'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 
 type Props = {
   encryptedFile: string
   encryptedSymmetricKey: string
   tokenId: number
+  decryptTokenIds?: number[]
 }
 
 const SecretMessage: FC<Props> = ({
   encryptedFile,
   encryptedSymmetricKey,
-  tokenId
+  tokenId,
+  decryptTokenIds
 }) => {
-  const { decrypt } = useLitDecryption(tokenId)
+  const { decrypt } = useLitDecryption(tokenId, decryptTokenIds)
   const [message, setMessage] = useState<string>()
   const { isOpen, onOpen, onClose } = useDisclosure()
 

@@ -9,7 +9,7 @@ import {
   Flex,
   Badge
 } from '@chakra-ui/react'
-import { useState, ReactElement, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { NFTImage } from '@/components/NFTImage'
 import { useAccount } from 'wagmi'
 import useTranslation from 'next-translate/useTranslation'
@@ -19,7 +19,6 @@ import {
   useIsHoldingByTokenId,
   useMintTicket
 } from '@/hooks/useTicketContract'
-import { useCountdown } from '@/hooks/useCountdown'
 import { parseIpfs2Pinata } from '@/utils/ipfs2http'
 import SecretMessage from '@/components/MintTicket/SecretMessage'
 import UpdateSecretMessageCrypt from './UpdateSecretMessageCrypt'
@@ -86,32 +85,35 @@ const MintTicket: React.FC<Props> = ({ id, item, imageOnly, ...props }) => {
     }
   }, [minted])
 
-  const { isStart, ...countDown } = useCountdown()
-
-  const creatorName =
-    item?.tokenURIJSON?.attributes?.length > 0
-      ? item?.tokenURIJSON?.attributes.reduce((text, attribute) => {
-          const currentText =
-            attribute?.trait_type === 'CreatorName' ? attribute.value : ''
-          return text + currentText
-        }, '')
-      : ''
-  const isSale = () => {
+  const creatorName = useMemo(
+    () =>
+      item?.tokenURIJSON?.attributes?.length > 0
+        ? item?.tokenURIJSON?.attributes.reduce((text, attribute) => {
+            const currentText =
+              attribute?.trait_type === 'CreatorName' ? attribute.value : ''
+            return text + currentText
+          }, '')
+        : '',
+    [item]
+  )
+  const isSale = useCallback(() => {
     const now = Date.now()
     if (now < (item.open_blockTimestamp as number) * 1000) return 0
     if (now > (item.close_blockTimestamp as number) * 1000) return 2
     return 1
-  }
+  }, [item])
 
-  const blockTimeStamp = {
-    salesStatus: isSale(),
-    openText: dayjs((item.open_blockTimestamp as number) * 1000).format(
-      'YYYY/MM/DD'
-    ),
-    closeText: dayjs((item.close_blockTimestamp as number) * 1000).format(
-      'YYYY/MM/DD'
-    )
-  }
+  const blockTimeStamp = useMemo(() => {
+    return {
+      salesStatus: isSale(),
+      openText: dayjs((item.open_blockTimestamp as number) * 1000).format(
+        'YYYY/MM/DD'
+      ),
+      closeText: dayjs((item.close_blockTimestamp as number) * 1000).format(
+        'YYYY/MM/DD'
+      )
+    }
+  }, [isSale, item.close_blockTimestamp, item.open_blockTimestamp])
 
   const { address } = useAccount()
 
@@ -245,6 +247,7 @@ const MintTicket: React.FC<Props> = ({ id, item, imageOnly, ...props }) => {
                       encryptedSymmetricKey={
                         item.tokenURIJSON.encryptedSymmetricKey
                       }
+                      decryptTokenIds={item.tokenURIJSON.decryptTokenIds}
                       tokenId={id}
                     />
                   )}
@@ -257,6 +260,7 @@ const MintTicket: React.FC<Props> = ({ id, item, imageOnly, ...props }) => {
                       encryptedSymmetricKey={
                         item?.tokenURIJSON?.encryptedSymmetricKey
                       }
+                      decryptTokenIds={item?.tokenURIJSON?.decryptTokenIds}
                     />
                   </Box>
                 )}

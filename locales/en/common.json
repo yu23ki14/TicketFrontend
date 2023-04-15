@@ -47,6 +47,7 @@
 
   "REGISTERD_TICKET_LIST": "Registered ticket list",
   "EMPTY_TICKET_LIST": "No relevant ticket found",
+  "EXISTS_SAME_TOKENID": "Duplicate Ticket ID set for secret message",
 
   "CLAIM": {
     "TOAST": {
@@ -55,7 +56,8 @@
       "SUCCESS": "Ticket was successfully received.",
       "RETRIEVE_TICKETS_FAILED": "Failed to retrieve ticket list.",
       "TX_FAILED": "Transaction failed.",
-      "DEFAULT_ERROR": "Unknown Server Error"
+      "DEFAULT_ERROR": "Unknown Server Error",
+      "NOT_EXISTS_SECRET_MESSAGE_TOKENID": "Some Ticket IDs do not exist."
     }
   },
 
