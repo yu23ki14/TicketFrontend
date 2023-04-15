@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { UseFormWatch } from 'react-hook-form'
 
 export type SharesAmounts = number | null
 export type ShareholdersAddress = string
@@ -57,6 +56,7 @@ const useRevenueSharing = ({ watch }: { watch: any }) => {
     )
     setShareholdersAddresses(holdersAddresses)
   }
+
   return {
     sharesAmounts,
     shareholdersAddresses,

@@ -1,6 +1,6 @@
 import { useRegisterTicket } from '@/hooks/useTicketContract'
 import useTranslation from 'next-translate/useTranslation'
-import { FC, Fragment, useCallback, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import {
   Box,
@@ -20,6 +20,7 @@ import { useRouter } from 'next/router'
 import { useLitEncryption } from '@/hooks/useLitProtocol'
 import { BigNumber, ethers } from 'ethers'
 import { AddIcon, MinusIcon } from '@chakra-ui/icons'
+import SecretMessage from '@/components/CreateTicket/SecretMessage'
 import {
   useRevenueSharing,
   RevenueSharingData
@@ -30,6 +31,9 @@ type FormData = {
   description: string
   image: File | null
   secretMessage: File | null
+  linkedDecryptTokenIds: {
+    tokenId: number | null
+  }[]
   revenueSharingData: RevenueSharingData[]
   creatorName: string
   maxSupply: number
@@ -45,6 +49,7 @@ interface TicketTokenMetadata {
   external_url?: string | null | undefined
   encryptedFile?: string
   encryptedSymmetricKey?: string
+  linkedDecryptTokenIds?: number[]
   attributes: TokenAttribute[]
 }
 
@@ -80,6 +85,7 @@ const CreateTicketForm: FC = () => {
       image: null,
       secretMessage: null,
       revenueSharingData: [{ shareholdersAddress: '', sharesAmount: null }],
+      linkedDecryptTokenIds: [],
       creatorName: '',
       maxSupply: 10,
       price: 10,
@@ -95,10 +101,15 @@ const CreateTicketForm: FC = () => {
     mappingShareholdersAddresses
   } = useRevenueSharing({ watch })
 
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: revenueSharingFields,
+    append: revenueSharingAppend,
+    remove: revenueSharingRemove
+  } = useFieldArray({
     control,
     name: 'revenueSharingData'
   })
+
   const [metadataURI, setMetadataURI] = useState('')
 
   const {
@@ -275,33 +286,7 @@ const CreateTicketForm: FC = () => {
           />
         </FormControl>
 
-        <FormControl mt={5}>
-          <FormLabel mt="1em" htmlFor="secretMessage">
-            {t('NEW_TICKET_SECRET_MESSAGE_LABEL')}
-          </FormLabel>
-          <Controller
-            control={control}
-            name="secretMessage"
-            rules={{
-              validate: (v) => validateFileSize(v, 0.5)
-            }}
-            render={({ field: { onChange }, fieldState }) => (
-              <>
-                <Input
-                  variant="unstyled"
-                  p={1}
-                  id="secretMessage"
-                  type="file"
-                  accept={'image/*'}
-                  onChange={(e) =>
-                    e.target.files ? onChange(e.target.files[0]) : false
-                  }
-                />
-                <Box color="red.300">{fieldState.error?.message}</Box>
-              </>
-            )}
-          />
-        </FormControl>
+        <SecretMessage control={control} validateFileSize={validateFileSize} />
 
         <FormControl mt={5} isRequired>
           <FormLabel mt="1em" htmlFor="ticketName">
@@ -403,7 +388,7 @@ const CreateTicketForm: FC = () => {
           <FormLabel mt="1em" htmlFor="revenueSharingData">
             {t('NEW_TICKET_POOL_WALLET')}
           </FormLabel>
-          {fields.map((field, index) => (
+          {revenueSharingFields.map((field, index) => (
             <Flex justifyContent="flex-end" key={field.id} mb={2}>
               <Controller
                 control={control}
@@ -472,7 +457,7 @@ const CreateTicketForm: FC = () => {
               size="md"
               icon={<AddIcon />}
               onClick={() =>
-                append({
+                revenueSharingAppend({
                   shareholdersAddress: '',
                   sharesAmount: null
                 })
@@ -484,7 +469,10 @@ const CreateTicketForm: FC = () => {
               aria-label="Add Wallet Address"
               size="md"
               icon={<MinusIcon />}
-              onClick={() => fields.length > 1 && remove(fields.length - 1)}
+              onClick={() =>
+                revenueSharingFields.length > 1 &&
+                revenueSharingRemove(revenueSharingFields.length - 1)
+              }
             />
           </Flex>
         </FormControl>
