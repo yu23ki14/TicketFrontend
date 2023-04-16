@@ -20,6 +20,9 @@
   "NEW_TICKET_TITLE_LABEL": "Ticket title",
   "NEW_TICKET_PICTURE_LABEL": "Picture（up to 3 MB）",
   "NEW_TICKET_SECRET_MESSAGE_LABEL": "Secret message for ticket holder（up to 500 KB）",
+  "NEW_TICKET_CONDITIONS_SECRET_MESSAGE_LABEL": "You can add conditions for viewing secret messages (requires a ID for an already issued ticket).",
+  "NEW_TICKET_SECRET_LINKED_DECRYPT_TOKEN_IDS_LABEL": "Enter the ID(s) of the ticket(s) they need to see the secret message(s)",
+  "ADD_LINKED_DECRYPT_TOKEN_IDS_BUTTON_LABEL": "Add ID(s)",
   "NEW_TICKET_CREATOR_NAME": "Creator name",
   "NEW_TICKET_DESCRIPTION": "NFT description",
   "NEW_TICKET_MAX_SUPPLY": "Max supply",
@@ -44,6 +47,7 @@
 
   "REGISTERD_TICKET_LIST": "Registered ticket list",
   "EMPTY_TICKET_LIST": "No relevant ticket found",
+  "EXISTS_SAME_TOKENID": "Duplicate Ticket ID set for secret message",
 
   "CLAIM": {
     "TOAST": {
@@ -52,7 +56,8 @@
       "SUCCESS": "Ticket was successfully received.",
       "RETRIEVE_TICKETS_FAILED": "Failed to retrieve ticket list.",
       "TX_FAILED": "Transaction failed.",
-      "DEFAULT_ERROR": "Unknown Server Error"
+      "DEFAULT_ERROR": "Unknown Server Error",
+      "NOT_EXISTS_SECRET_MESSAGE_TOKENID": "Some Ticket IDs do not exist."
     }
   },
 

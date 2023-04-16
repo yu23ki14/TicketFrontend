@@ -13,6 +13,7 @@ interface TicketInfoProps extends Ticket.TicketInfoStruct {
     close_blockTimestamp: string
     encryptedFile?: string
     encryptedSymmetricKey?: string
+    decryptTokenIds?: number[]
     attributes: { trait_type: string; value: string }[]
   }
 }

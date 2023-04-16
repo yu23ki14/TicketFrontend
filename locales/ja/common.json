@@ -19,7 +19,10 @@
   "NEW_TICKET_HENKAKUTOKEN_100": "100枚以降は10HENKAKU/1枚",
   "NEW_TICKET_TITLE_LABEL": "チケット名",
   "NEW_TICKET_PICTURE_LABEL": "画像（3MBまで）",
-  "NEW_TICKET_SECRET_MESSAGE_LABEL": "チケットを入手した人だけが見れるメッセージです（500KBまで）",
+  "NEW_TICKET_SECRET_MESSAGE_LABEL": "チケットを入手した人だけが見れるシークレットメッセージです（500KBまで）",
+  "NEW_TICKET_CONDITIONS_SECRET_MESSAGE_LABEL": "シークレットメッセージを見るための条件を追加できます（すでに発行されているチケットのIDが必要です）",
+  "NEW_TICKET_SECRET_LINKED_DECRYPT_TOKEN_IDS_LABEL": "シークレットメッセージを見るために必要なチケットのIDを入力してください（複数可）",
+  "ADD_LINKED_DECRYPT_TOKEN_IDS_BUTTON_LABEL": "チケットIDの追加",
   "NEW_TICKET_DESCRIPTION": "チケットの説明",
   "NEW_TICKET_CREATOR_NAME": "作成者名",
   "NEW_TICKET_MAX_SUPPLY": "最大発行枚数",
@@ -44,6 +47,7 @@
 
   "REGISTERD_TICKET_LIST": "チケット一覧",
   "EMPTY_TICKET_LIST": "該当するチケットが見つかりませんでした",
+  "EXISTS_SAME_TOKENID": "シークレットメッセージ用に設定したチケットIDが重複しています",
 
   "CLAIM": {
     "TOAST": {
@@ -52,7 +56,8 @@
       "SUCCESS": "チケットを受け取りました。",
       "RETRIEVE_TICKETS_FAILED": "チケット一覧の取得に失敗しました。",
       "TX_FAILED": "トランザクションが失敗しました。",
-      "DEFAULT_ERROR": "不明なサーバーエラー"
+      "DEFAULT_ERROR": "不明なサーバーエラー",
+      "NOT_EXISTS_SECRET_MESSAGE_TOKENID": "シークレットメッセージ用に設定したチケットIDの中で存在しないものがあります"
     }
   },
 

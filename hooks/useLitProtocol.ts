@@ -28,20 +28,35 @@ const chainName = (chainId: number) => {
   }
 }
 
-const generateAccessControlConditions = (tokenId: number, chainId: number) => {
+const generateAccessControlConditions = (
+  tokenId: number,
+  chainId: number,
+  decryptTokenIds?: number[]
+) => {
+  const additionalConditions = decryptTokenIds?.map((decryptTokenId) => {
+    return generateAccessControlConditionsTemplate(decryptTokenId, chainId)
+  })
   return [
-    {
-      contractAddress: contractAddresses['ticket'][chainId],
-      standardContractType: 'ERC1155',
-      chain: chainName(chainId),
-      method: 'balanceOf',
-      parameters: [':userAddress', `${tokenId}`],
-      returnValueTest: {
-        comparator: '>=',
-        value: '1'
-      }
-    }
+    generateAccessControlConditionsTemplate(tokenId, chainId),
+    ...(additionalConditions ?? [])
   ]
+}
+
+const generateAccessControlConditionsTemplate = (
+  tokenId: number,
+  chainId: number
+) => {
+  return {
+    contractAddress: contractAddresses['ticket'][chainId],
+    standardContractType: 'ERC1155',
+    chain: chainName(chainId),
+    method: 'balanceOf',
+    parameters: [':userAddress', `${tokenId}`],
+    returnValueTest: {
+      comparator: '>=',
+      value: '1'
+    }
+  }
 }
 
 export const useLitEncryption = () => {
@@ -77,7 +92,11 @@ export const useLitEncryption = () => {
     }
   }
 
-  const updateEncrypt = async (tokenId: number, encryptedSymmetricKey: any) => {
+  const updateEncrypt = async (
+    tokenId: number,
+    encryptedSymmetricKey: any,
+    decryptTokenIds?: number[]
+  ) => {
     if (!litClient) return
     const authSig = await LitJsSdk.checkAndSignAuthMessage({
       chain: chainName(chainId)
@@ -85,7 +104,8 @@ export const useLitEncryption = () => {
     await litClient.saveEncryptionKey({
       accessControlConditions: generateAccessControlConditions(
         tokenId,
-        chainId
+        chainId,
+        decryptTokenIds
       ),
       encryptedSymmetricKey: LitJsSdk.uint8arrayFromString(
         encryptedSymmetricKey,
@@ -100,12 +120,16 @@ export const useLitEncryption = () => {
   return { initEncrypt, updateEncrypt, encryptedSymmetricKey }
 }
 
-export const useLitDecryption = (tokenId: number) => {
+export const useLitDecryption = (
+  tokenId: number,
+  decryptTokenIds?: number[]
+) => {
   const litClient = useLitClient()
   const { chainId } = useChainId()
   const accessControlConditions = generateAccessControlConditions(
     tokenId,
-    chainId
+    chainId,
+    decryptTokenIds
   )
 
   const decrypt = async (
@@ -128,8 +152,9 @@ export const useLitDecryption = (tokenId: number) => {
         symmetricKey
       })
       return { decryptedFile }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
+      throw new Error(error.message)
     }
   }
 
