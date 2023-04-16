@@ -34,6 +34,7 @@ const SecretMessageForm: FC<Props> = ({ control, watch, validateFileSize }) => {
     return s.size !== decryptTokenIds.length
   }, [watch])
 
+  const [isShowDecryptTokenIds, toggleShowDecryptTokenIds] = useState(false)
   useEffect(() => {
     if (!watch('secretMessage')) {
       decryptTokenIdRemove()
@@ -41,7 +42,6 @@ const SecretMessageForm: FC<Props> = ({ control, watch, validateFileSize }) => {
     }
   }, [watch('secretMessage')])
 
-  const [isShowDecryptTokenIds, toggleShowDecryptTokenIds] = useState(false)
   return (
     <>
       <FormControl mt={5}>

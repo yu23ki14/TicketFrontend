@@ -1,4 +1,7 @@
+import { useAccount } from 'wagmi'
+import { FC, useCallback, useMemo, useState } from 'react'
 import { useLitDecryption } from '@/hooks/useLitProtocol'
+import { useRetrieveHoldingTicketsByAddress } from '@/hooks/useTicketContract'
 import {
   Box,
   Button,
@@ -11,7 +14,6 @@ import {
   ModalOverlay,
   useDisclosure
 } from '@chakra-ui/react'
-import { FC, useCallback, useState } from 'react'
 
 type Props = {
   encryptedFile: string
@@ -27,6 +29,17 @@ const SecretMessage: FC<Props> = ({
   decryptTokenIds
 }) => {
   const { decrypt } = useLitDecryption(tokenId, decryptTokenIds)
+  const { address } = useAccount()
+  const { data, isLoading } = useRetrieveHoldingTicketsByAddress(address!)
+  const holdingTicketTokenIds = useMemo(
+    () => data.map((d) => d.id.toNumber()),
+    [data]
+  )
+  const isDecryptConditions = useMemo(
+    () => decryptTokenIds?.every((n) => holdingTicketTokenIds?.includes(n)),
+    [decryptTokenIds, holdingTicketTokenIds]
+  )
+
   const [message, setMessage] = useState<string>()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -50,16 +63,18 @@ const SecretMessage: FC<Props> = ({
   return (
     <Box>
       <Divider my={5} />
-      <Button
-        onClick={() => decryptMessage()}
-        colorScheme="teal"
-        height="auto"
-        py={2}
-      >
-        このチケットホルダーだけが読める
-        <br />
-        メッセージ・カードをみる
-      </Button>
+      {!isLoading && isDecryptConditions && (
+        <Button
+          onClick={() => decryptMessage()}
+          colorScheme="teal"
+          height="auto"
+          py={2}
+        >
+          このチケットホルダーだけが読める
+          <br />
+          メッセージ・カードをみる
+        </Button>
+      )}
 
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />

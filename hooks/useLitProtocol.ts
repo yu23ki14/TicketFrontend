@@ -152,8 +152,9 @@ export const useLitDecryption = (
         symmetricKey
       })
       return { decryptedFile }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
+      throw new Error(error.message)
     }
   }
 
