@@ -23,7 +23,7 @@ import { useRouter } from 'next/router'
 import { useLitEncryption } from '@/hooks/useLitProtocol'
 import { BigNumber, ethers } from 'ethers'
 import { AddIcon, MinusIcon } from '@chakra-ui/icons'
-import CreateSecretMessage from '@/components/CreateTicket/SecretMessage'
+import SecretMessageForm from '@/components/CreateTicket/SecretMessageForm'
 import {
   useRevenueSharing,
   RevenueSharingData
@@ -159,10 +159,10 @@ const CreateTicketForm: FC = () => {
       const tempDecryptTokenIds = data.decryptTokenIds
         .filter((n) => n !== null)
         .map((n) => Number(n))
-      const isExistsTokenId = tempDecryptTokenIds.every((n) =>
+      const isExistsTokenIds = tempDecryptTokenIds.every((n) =>
         filteredTokenId?.includes(n)
       )
-      if (!isExistsTokenId) {
+      if (!isExistsTokenIds) {
         toast({
           id: 'NOT_EXISTS_TOKENID',
           title: t('CLAIM.TOAST.NOT_EXISTS_SECRET_MESSAGE_TOKENID'),
@@ -195,11 +195,6 @@ const CreateTicketForm: FC = () => {
         if (tempDecryptTokenIds[0]) {
           metadataJson.decryptTokenIds = tempDecryptTokenIds
         }
-        console.log(metadataJson)
-
-        console.log('OK')
-
-        return
         const encryptedInfo = await initEncrypt(data.secretMessage)
         metadataJson.encryptedFile = encryptedInfo?.stringifiedEncryptedFile
         metadataJson.encryptedSymmetricKey =
@@ -325,7 +320,7 @@ const CreateTicketForm: FC = () => {
           />
         </FormControl>
 
-        <CreateSecretMessage
+        <SecretMessageForm
           control={control}
           watch={watch}
           validateFileSize={validateFileSize}

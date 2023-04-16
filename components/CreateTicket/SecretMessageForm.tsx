@@ -12,42 +12,36 @@ import useTranslation from 'next-translate/useTranslation'
 import { Controller, useFieldArray } from 'react-hook-form'
 import { AddIcon, MinusIcon } from '@chakra-ui/icons'
 
-interface CreateSecretMessageProps {
+interface Props {
   control: any
   watch: any
   validateFileSize(file: File | null, limit: number): string | true
 }
 
-const CreateSecretMessage: FC<CreateSecretMessageProps> = ({
-  control,
-  watch,
-  validateFileSize
-}) => {
+const SecretMessageForm: FC<Props> = ({ control, watch, validateFileSize }) => {
   const { t } = useTranslation('common')
   const {
-    fields: linkedDecryptTokenIdFields,
-    append: linkedDecryptTokenIdAppend,
-    remove: linkedDecryptTokenIdRemove
+    fields: decryptTokenIdFields,
+    append: decryptTokenIdAppend,
+    remove: decryptTokenIdRemove
   } = useFieldArray({
     control,
     name: 'decryptTokenIds'
   })
   const isExistsSameTokenId = useCallback(() => {
-    const ids = watch('decryptTokenIds')
-
-    const s = new Set(ids)
-    return s.size !== ids.length
+    const decryptTokenIds = watch('decryptTokenIds')
+    const s = new Set(decryptTokenIds)
+    return s.size !== decryptTokenIds.length
   }, [watch])
 
   useEffect(() => {
     if (!watch('secretMessage')) {
-      linkedDecryptTokenIdRemove()
-      toggleShowLinkedDecryptTokenIds(false)
+      decryptTokenIdRemove()
+      toggleShowDecryptTokenIds(false)
     }
   }, [watch('secretMessage')])
 
-  const [isShowLinkedDecryptTokenIds, toggleShowLinkedDecryptTokenIds] =
-    useState(false)
+  const [isShowDecryptTokenIds, toggleShowDecryptTokenIds] = useState(false)
   return (
     <>
       <FormControl mt={5}>
@@ -80,16 +74,17 @@ const CreateSecretMessage: FC<CreateSecretMessageProps> = ({
 
       {watch('secretMessage') && (
         <FormControl>
-          {!isShowLinkedDecryptTokenIds ? (
+          {!isShowDecryptTokenIds ? (
             <>
-              <FormLabel mt="1em" htmlFor="decryptTokenIds" fontSize="sm">
+              <FormLabel mt="1em" htmlFor="decryptTokenIdsButton" fontSize="sm">
                 {t('NEW_TICKET_CONDITIONS_SECRET_MESSAGE_LABEL')}
               </FormLabel>
               <Button
+                name="decryptTokenIdsButton"
                 size="sm"
                 onClick={() => {
-                  linkedDecryptTokenIdAppend(null)
-                  toggleShowLinkedDecryptTokenIds((bool) => !bool)
+                  decryptTokenIdAppend(null)
+                  toggleShowDecryptTokenIds((bool) => !bool)
                 }}
               >
                 {t('ADD_LINKED_DECRYPT_TOKEN_IDS_BUTTON_LABEL')}
@@ -101,7 +96,7 @@ const CreateSecretMessage: FC<CreateSecretMessageProps> = ({
                 {t('NEW_TICKET_SECRET_LINKED_DECRYPT_TOKEN_IDS_LABEL')}
               </FormLabel>
               <Flex justifyContent="flex-start" flexWrap="wrap">
-                {linkedDecryptTokenIdFields.map((field, index) => (
+                {decryptTokenIdFields.map((field, index) => (
                   <Controller
                     control={control}
                     name={`decryptTokenIds.${index}`}
@@ -138,7 +133,7 @@ const CreateSecretMessage: FC<CreateSecretMessageProps> = ({
                     aria-label="Add Wallet Address"
                     size="md"
                     icon={<AddIcon />}
-                    onClick={() => linkedDecryptTokenIdAppend(null)}
+                    onClick={() => decryptTokenIdAppend(null)}
                     mr={2}
                   />
                   <IconButton
@@ -147,11 +142,9 @@ const CreateSecretMessage: FC<CreateSecretMessageProps> = ({
                     size="md"
                     icon={<MinusIcon />}
                     onClick={() => {
-                      linkedDecryptTokenIdRemove(
-                        linkedDecryptTokenIdFields.length - 1
-                      )
-                      linkedDecryptTokenIdFields.length <= 1 &&
-                        toggleShowLinkedDecryptTokenIds((bool) => !bool)
+                      decryptTokenIdRemove(decryptTokenIdFields.length - 1)
+                      decryptTokenIdFields.length <= 1 &&
+                        toggleShowDecryptTokenIds((bool) => !bool)
                     }}
                   />
                 </Flex>
@@ -164,4 +157,4 @@ const CreateSecretMessage: FC<CreateSecretMessageProps> = ({
   )
 }
 
-export default CreateSecretMessage
+export default SecretMessageForm
