@@ -53,17 +53,11 @@ const Header: FC<Props> = ({ isExternal = false }) => {
           {!isExternal ? (
             <NextLink passHref href="/" locale={router.locale}>
               <Link href="/">
-                <Heading size={{ base: 'xs', sm: 'md' }}>
-                  {t('HENKAKU')}{' '}
-                  <span className="text_ticket">{t('TICKET')}</span>
-                </Heading>
+                <Heading size={{ base: 'xs', sm: 'md' }}>web3ticket</Heading>
               </Link>
             </NextLink>
           ) : (
-            <Heading size="md">
-              {t('HENKAKU')}{' '}
-              <span className="text_ticket">{t('TICKET')}</span>
-            </Heading>
+            <Heading size="md">web3ticket</Heading>
           )}
         </Box>
         <Spacer />
