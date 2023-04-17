@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}
       >
-        <Text>{t('COPYRIGHT_LINE')}</Text>
+        {/* <Text>{t('COPYRIGHT_LINE')}</Text>
         <Stack direction={'row'} spacing={6}>
           <SocialButton
             label={'Instagram'}
@@ -75,7 +75,7 @@ const Footer: React.FC = () => {
             <Text mr={1}>Contract</Text>
             <Icon as={FaGithubAlt} />
           </SocialButton>
-        </Stack>
+        </Stack> */}
       </Container>
     </Box>
   )

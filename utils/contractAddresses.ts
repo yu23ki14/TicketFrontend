@@ -16,14 +16,17 @@ const contractAddresses: ContractAddresses = {
     [chainId.hardhat]:
       (process.env.NEXT_PUBLIC_CONTRACT_HENKAKUV2_ADDRESS as `0x${string}`) ??
       '',
-    [chainId.polygonMumbai]: '0x0A3c1EBA7289c9cfe8798ac2B3C0CF172c573EBD',
+    [chainId.polygonMumbai]:
+      (process.env.NEXT_PUBLIC_CONTRACT_HENKAKUV2_ADDRESS as `0x${string}`) ??
+      '',
     [chainId.goerli]: '0x02Dd992774aBCacAD7D46155Da2301854903118D',
     [chainId.polygon]: '0x0cc91a5FFC2E9370eC565Ab42ECE33bbC08C11a2'
   },
   ticket: {
     [chainId.hardhat]:
       (process.env.NEXT_PUBLIC_CONTRACT_TICKET_ADDRESS as `0x${string}`) ?? '',
-    [chainId.polygonMumbai]: '0xED10f95100f347cAf011006E21044949882c1D87',
+    [chainId.polygonMumbai]:
+      (process.env.NEXT_PUBLIC_CONTRACT_TICKET_ADDRESS as `0x${string}`) ?? '',
     [chainId.goerli]: '0x6beD9e854eC468373B70a00d864E660b9F224D32',
     [chainId.polygon]: '0x05338c40B9A379742fC9b7bA681Ae8CE8Db28AC2'
   }

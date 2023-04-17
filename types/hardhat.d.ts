@@ -61,6 +61,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Administration__factory>;
     getContractFactory(
+      name: "DemoToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.DemoToken__factory>;
+    getContractFactory(
       name: "HenkakuToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.HenkakuToken__factory>;
@@ -141,6 +145,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Administration>;
+    getContractAt(
+      name: "DemoToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.DemoToken>;
     getContractAt(
       name: "HenkakuToken",
       address: string,

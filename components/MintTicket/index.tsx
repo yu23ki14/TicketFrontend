@@ -241,7 +241,7 @@ const MintTicket: React.FC<Props> = ({ id, item, imageOnly, ...props }) => {
 
                 {item?.tokenURIJSON.encryptedFile &&
                   item?.tokenURIJSON.encryptedSymmetricKey &&
-                  isHolding && (
+                  (isHolding || mintState.status === 'minted') && (
                     <SecretMessage
                       encryptedFile={String(item.tokenURIJSON.encryptedFile)}
                       encryptedSymmetricKey={
@@ -266,7 +266,7 @@ const MintTicket: React.FC<Props> = ({ id, item, imageOnly, ...props }) => {
                 )}
             </Box>
 
-            {isHolding && (
+            {(isHolding || mintState.status === 'minted') && (
               <ChatModal receiverAddress={item.creator.toString()} />
             )}
           </GridItem>

@@ -153,8 +153,7 @@ export const useLitDecryption = (
       })
       return { decryptedFile }
     } catch (error: any) {
-      console.log(error)
-      throw new Error(error.message)
+      throw error
     }
   }
 

@@ -32,30 +32,38 @@ const SecretMessage: FC<Props> = ({
   const { address } = useAccount()
   const { data, isLoading } = useRetrieveHoldingTicketsByAddress(address!)
   const holdingTicketTokenIds = useMemo(
-    () => data.map((d) => d.id.toNumber()),
+    () => data?.map((d) => d.id.toNumber()),
     [data]
   )
-  const isDecryptConditions = useMemo(
-    () => decryptTokenIds?.every((n) => holdingTicketTokenIds?.includes(n)),
-    [decryptTokenIds, holdingTicketTokenIds]
-  )
+
+  const isDecryptConditions = useMemo(() => {
+    if (decryptTokenIds) {
+      return decryptTokenIds?.every((n) => holdingTicketTokenIds?.includes(n))
+    } else {
+      return true
+    }
+  }, [decryptTokenIds, holdingTicketTokenIds])
 
   const [message, setMessage] = useState<string>()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const decryptMessage = useCallback(async () => {
     if (!message) {
-      const decryptedMessage = await decrypt(
-        encryptedFile,
-        encryptedSymmetricKey
-      )
-      let binary = ''
-      const bytes = new Uint8Array(decryptedMessage?.decryptedFile)
-      const len = bytes.byteLength
-      for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i])
+      try {
+        const decryptedMessage = await decrypt(
+          encryptedFile,
+          encryptedSymmetricKey
+        )
+        let binary = ''
+        const bytes = new Uint8Array(decryptedMessage?.decryptedFile)
+        const len = bytes.byteLength
+        for (var i = 0; i < len; i++) {
+          binary += String.fromCharCode(bytes[i])
+        }
+        setMessage(window.btoa(binary))
+      } catch (error) {
+        return
       }
-      setMessage(window.btoa(binary))
     }
     onOpen()
   }, [decrypt])
@@ -63,7 +71,7 @@ const SecretMessage: FC<Props> = ({
   return (
     <Box>
       <Divider my={5} />
-      {!isLoading && isDecryptConditions && (
+      {!isLoading && (
         <Button
           onClick={() => decryptMessage()}
           colorScheme="teal"
@@ -74,6 +82,14 @@ const SecretMessage: FC<Props> = ({
           <br />
           メッセージ・カードをみる
         </Button>
+      )}
+
+      {!isDecryptConditions && !isLoading && (
+        <Box>
+          シークレット・メッセージを閲覧するためには、このチケットに加えてID「
+          {decryptTokenIds?.join('、')}
+          」のチケットを保持している必要があります。
+        </Box>
       )}
 
       <Modal isOpen={isOpen} onClose={onClose} size="xl">

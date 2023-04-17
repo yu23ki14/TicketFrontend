@@ -13,10 +13,10 @@
   "LANG_SWITCHER": "English",
 
   "CREATE_NEW_TICKET": "チケット発行",
-  "NEW_TICKET_REQUIRE_HENKAKUTOKEN": "チケットの発行にはHENKAKUトークンを持っていることが条件となります。",
-  "NEW_TICKET_HENKAKUTOKEN_0": "10枚までは10HENKAKU固定",
-  "NEW_TICKET_HENKAKUTOKEN_10": "10~100枚までは5HENKAKU/1枚",
-  "NEW_TICKET_HENKAKUTOKEN_100": "100枚以降は10HENKAKU/1枚",
+  "NEW_TICKET_REQUIRE_HENKAKUTOKEN": "チケットの発行にはトークンを持っていることが条件となります。",
+  "NEW_TICKET_HENKAKUTOKEN_0": "10枚までは10固定",
+  "NEW_TICKET_HENKAKUTOKEN_10": "10~100枚までは5/1枚",
+  "NEW_TICKET_HENKAKUTOKEN_100": "100枚以降は10/1枚",
   "NEW_TICKET_TITLE_LABEL": "チケット名",
   "NEW_TICKET_PICTURE_LABEL": "画像（3MBまで）",
   "NEW_TICKET_SECRET_MESSAGE_LABEL": "チケットを入手した人だけが見れるシークレットメッセージです（500KBまで）",
@@ -35,10 +35,10 @@
   "REQUIRED_INPUT": "必須項目です。",
   "UPLOAD_SUCCESS": "アップロードが完了しました",
   "BUTTON_CREATE": "発行する",
-  "BUTTON_APPROVE": "チケットNFTコントラクトがHENKAKUトークンの支払い操作をすることを承認",
+  "BUTTON_APPROVE": "チケットNFTコントラクトがトークンの支払い操作をすることを承認",
   "ERC20APPROVED": {
-    "APPROVED": "チケットコントラクトにHENKAKU支払いの許可付与済み。",
-    "UNAPPROVED": "承認されていません。HENKAKU支払いの許可を与えてください。"
+    "APPROVED": "チケットコントラクトに支払いの許可付与済み。",
+    "UNAPPROVED": "承認されていません。支払いの許可を与えてください。"
   },
   "IMAGE_PREVIEW_ALT": "チケット NFTのプレビュー",
 

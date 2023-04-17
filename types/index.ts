@@ -30,6 +30,8 @@ export type { IERC165 } from "./@openzeppelin/contracts/utils/introspection/IERC
 export { IERC165__factory } from "./factories/@openzeppelin/contracts/utils/introspection/IERC165__factory";
 export type { Administration } from "./contracts/community/Administration";
 export { Administration__factory } from "./factories/contracts/community/Administration__factory";
+export type { DemoToken } from "./contracts/community/external/DemoToken";
+export { DemoToken__factory } from "./factories/contracts/community/external/DemoToken__factory";
 export type { HenkakuToken } from "./contracts/community/external/henkaku-v2/HenkakuToken";
 export { HenkakuToken__factory } from "./factories/contracts/community/external/henkaku-v2/HenkakuToken__factory";
 export type { InteractHenakuToken } from "./contracts/community/InteractHenkakuToken.sol/InteractHenakuToken";

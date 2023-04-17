@@ -74,9 +74,10 @@ const useAllTicketsInfo = (items: Ticket.TicketInfoStructOutput[]) => {
           return await mappingTicketInfo(item)
         })
       )
-      return mappedData.reverse()
+      const tickets = mappedData.reverse().filter((item) => item.id !== 0)
+      setAllTicketsInfo(tickets)
     }
-    fetchAllTicketsInfo().then((data) => setAllTicketsInfo(data))
+    fetchAllTicketsInfo()
   }, [items])
   return { allTicketsInfo }
 }

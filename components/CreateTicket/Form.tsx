@@ -475,7 +475,7 @@ const CreateTicketForm: FC = () => {
                     </Flex>
                     {sharesAmounts.length > 0 && (
                       <Text fontSize="xs" mt={2}>
-                        {sharesAmounts[index]} HENKAKU
+                        {sharesAmounts[index]} トークン
                       </Text>
                     )}
                   </Box>
