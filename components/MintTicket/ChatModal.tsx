@@ -1,11 +1,12 @@
 import { Box, Button, Text } from '@chakra-ui/react'
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { useInitPush } from '@/hooks/usePushProtocol'
 import { Chat, ENV } from '@pushprotocol/uiweb'
 import { useAccount, useSigner } from 'wagmi'
 import { Signer } from 'ethers'
 import styles from './ChatModal.module.css'
 import useTranslation from 'next-translate/useTranslation'
+import { useChainId } from '@/hooks'
 
 type Props = {
   receiverAddress: string
@@ -16,6 +17,18 @@ const ChatModal: FC<Props> = ({ receiverAddress }) => {
   const { t, lang } = useTranslation('ticket')
   const { data } = useSigner()
   const { address } = useAccount()
+
+  const { chainId } = useChainId()
+  const chainName = useMemo(() => {
+    switch (chainId) {
+      case 80001:
+        return 'mumbai'
+      case 137:
+        return 'polygon'
+      default:
+        return ''
+    }
+  }, [chainId])
 
   return (
     <>
@@ -33,7 +46,7 @@ const ChatModal: FC<Props> = ({ receiverAddress }) => {
               account={address as string}
               supportAddress={receiverAddress}
               signer={data as Signer}
-              env={ENV.STAGING}
+              env={chainName === 'mumbai' ? ENV.STAGING : ENV.PROD}
               modalTitle={t('CHAT')}
               greetingMsg={t('GREETING_MSG')}
             />
