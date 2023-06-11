@@ -14,7 +14,8 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@lit-protocol/sdk-browser": "^1.1.241",
-    "@pushprotocol/restapi": "^1.2.2",
+    "@pushprotocol/restapi": "^1.2.15",
+    "@pushprotocol/uiweb": "^1.0.2",
     "base64-blob": "^1.4.1",
     "chakra-dayzed-datepicker": "^0.2.7",
     "date-fns": "^2.29.3",
@@ -30,6 +31,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.41.0",
     "react-icons": "^4.6.0",
+    "styled-components": "^6.0.0-rc.1",
     "wagmi": "^0.8.4"
   },
   "devDependencies": {

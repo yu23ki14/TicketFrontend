@@ -11,12 +11,16 @@
     "BEFORE_SALE": "This ticket is not yet sold.",
     "END_OF_SALE": "This ticket has been sold.",
     "SOLD_OUT": "This ticket is sold out.",
-    "SHARE": "Why not share this Ticket?"
+    "SHARE": "Why not share this Ticket?",
+    "CONTACT_ORGANIZERS": "Contact the organizers"
   },
   "APPROVE": "Enable to mint",
   "MINT": "Purchase",
   "SALES_PERIOD": "sales period",
   "CONNECT_WALLET": "Connect your wallet",
   "SALES_PERIOD_HELPER": "（JST）",
-  "UNTIL_START": "Until obtainable"
+  "UNTIL_START": "Until obtainable",
+  "CHAT": "Chat window",
+  "GREETING_MSG": "Welcome!",
+  "CONNECT_TO_CHAT": "Connect to chat"
 }
