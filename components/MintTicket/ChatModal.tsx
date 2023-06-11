@@ -46,7 +46,7 @@ const ChatModal: FC<Props> = ({ receiverAddress }) => {
               account={address as string}
               supportAddress={receiverAddress}
               signer={data as Signer}
-              env={chainName === 'mumbai' ? ENV.STAGING : ENV.PROD}
+              env={chainName === 'polygon' ? ENV.PROD : ENV.STAGING}
               modalTitle={t('CHAT')}
               greetingMsg={t('GREETING_MSG')}
             />
