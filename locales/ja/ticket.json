@@ -9,12 +9,16 @@
     "BEFORE_SALE": "このチケットは販売前です",
     "END_OF_SALE": "販売終了しました",
     "SOLD_OUT": "チケットは売り切れました。",
-    "SHARE": "このチケットをシェアしてみませんか？"
+    "SHARE": "このチケットをシェアしてみませんか？",
+    "CONTACT_ORGANIZERS": "主催者に連絡する"
   },
   "APPROVE": "トークンの支払いを承認",
   "MINT": "購入する",
   "SALES_PERIOD": "販売期間",
   "CONNECT_WALLET": "メタマスクのウォレットに接続する",
   "SALES_PERIOD_HELPER": "（JST）",
-  "UNTIL_START": "受け取り可能になるまで"
+  "UNTIL_START": "受け取り可能になるまで",
+  "CHAT": "　チャット",
+  "GREETING_MSG": "ようこそ！",
+  "CONNECT_TO_CHAT": "チャットへ接続"
 }

@@ -1,60 +1,62 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalOverlay,
-  useDisclosure
-} from '@chakra-ui/react'
-import { FC } from 'react'
-import PushChat from '../Push/Chat'
-import { useDecryptedPvtKey, useInitPush } from '@/hooks/usePushProtocol'
-import { IUser } from '@pushprotocol/restapi'
+import { Box, Button, Text } from '@chakra-ui/react'
+import { FC, useMemo } from 'react'
+import { useInitPush } from '@/hooks/usePushProtocol'
+import { Chat, ENV } from '@pushprotocol/uiweb'
+import { useAccount, useSigner } from 'wagmi'
+import { Signer } from 'ethers'
+import styles from './ChatModal.module.css'
+import useTranslation from 'next-translate/useTranslation'
+import { useChainId } from '@/hooks'
 
 type Props = {
   receiverAddress: string
 }
 
-const ChatInner: FC<{ receiverAddress: string; user: IUser }> = ({
-  receiverAddress,
-  user
-}) => {
-  const { key } = useDecryptedPvtKey(user)
-
-  return key ? (
-    <PushChat user={user} decryptedKey={key} chatId={receiverAddress} />
-  ) : (
-    <></>
-  )
-}
-
 const ChatModal: FC<Props> = ({ receiverAddress }) => {
-  const { isOpen, onClose, onOpen } = useDisclosure()
   const { user, createUser } = useInitPush()
+  const { t, lang } = useTranslation('ticket')
+  const { data } = useSigner()
+  const { address } = useAccount()
+
+  const { chainId } = useChainId()
+  const chainName = useMemo(() => {
+    switch (chainId) {
+      case 80001:
+        return 'mumbai'
+      case 137:
+        return 'polygon'
+      default:
+        return ''
+    }
+  }, [chainId])
 
   return (
     <>
-      {user ? (
-        <>
-          <Button width="full" colorScheme="teal" onClick={onOpen}>
-            主催者とのメッセージを開始
+      <Box
+        className={[styles.chatWrapper, lang === 'en' ? styles.isEN : ''].join(
+          ' '
+        )}
+      >
+        <Text fontSize="l" as="b">
+          {t('TITLE.CONTACT_ORGANIZERS')}
+        </Text>
+        {user ? (
+          <Box mt={2}>
+            <Chat
+              account={address as string}
+              supportAddress={receiverAddress}
+              signer={data as Signer}
+              env={chainName === 'polygon' ? ENV.PROD : ENV.STAGING}
+              modalTitle={t('CHAT')}
+              greetingMsg={t('GREETING_MSG')}
+            />
+          </Box>
+        ) : (
+          <Button onClick={createUser} width="full" mt={2}>
+            {t('CONNECT_TO_CHAT')}
           </Button>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent maxH="80vh">
-              <ModalCloseButton />
-              <ModalBody pt={12} pb={5}>
-                <ChatInner receiverAddress={receiverAddress} user={user} />
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        </>
-      ) : (
-        <Button onClick={createUser} width="full">
-          主催者とチャットを始める
-        </Button>
-      )}
+        )}
+      </Box>
     </>
   )
 }
